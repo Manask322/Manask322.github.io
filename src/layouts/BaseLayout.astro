@@ -20,16 +20,40 @@ const { title, description, path = "/" } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#0f172a" />
+    <meta name="theme-color" content="#fafaf9" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <Seo title={title} description={description} path={path} />
   </head>
   <body>
+    <!-- Decorative emojis matching blogs theme -->
+    <aside class="emoji-decoration emoji-left" aria-hidden="true" style="position: fixed; top: 50%; left: clamp(1rem, 3vw, 2.5rem); transform: translateY(-50%); z-index: 5; pointer-events: none;">
+      <div style="display: flex; flex-direction: column; gap: 2rem; align-items: center;">
+        <span style="font-size: 2rem; opacity: 0.6;">💻</span>
+        <span style="font-size: 2rem; opacity: 0.6;">🚀</span>
+        <span style="font-size: 2rem; opacity: 0.6;">📊</span>
+      </div>
+    </aside>
+    <aside class="emoji-decoration emoji-right" aria-hidden="true" style="position: fixed; top: 50%; right: clamp(1rem, 3vw, 2.5rem); transform: translateY(-50%); z-index: 5; pointer-events: none;">
+      <div style="display: flex; flex-direction: column; gap: 2rem; align-items: center;">
+        <span style="font-size: 2rem; opacity: 0.6;">⚙️</span>
+        <span style="font-size: 2rem; opacity: 0.6;">🧠</span>
+        <span style="font-size: 2rem; opacity: 0.6;">📚</span>
+      </div>
+    </aside>
+
     <a class="skip-link" href="#content">Skip to content</a>
     <NavBar />
     <main id="content">
       <slot />
     </main>
     <Footer />
+
+    <style>
+      @media (max-width: 768px) {
+        .emoji-decoration {
+          display: none !important;
+        }
+      }
+    </style>
   </body>
 </html>
