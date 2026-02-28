@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://manask322.github.io/sitemap-index.xml

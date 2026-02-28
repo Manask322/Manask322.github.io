@@ -1,0 +1,45 @@
+---
+const pathname = Astro.url.pathname;
+const links = [
+  { href: "/", label: "Home" },
+  { href: "/projects/", label: "Projects" },
+  { href: "/experience/", label: "Experience" },
+  { href: "/blog/", label: "Blog" }
+];
+---
+
+<header class="border-bottom border-secondary-subtle">
+  <nav class="navbar navbar-expand-md" aria-label="Primary navigation">
+    <div class="container py-2">
+      <a class="navbar-brand fw-semibold text-light" href="/">Manas Kinkar</a>
+      <button
+        class="navbar-toggler border-secondary"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#site-nav"
+        aria-controls="site-nav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="site-nav">
+        <ul class="navbar-nav ms-auto gap-2">
+          {
+            links.map((link) => (
+              <li class="nav-item">
+                <a
+                  class={`nav-link ${pathname === link.href ? "active fw-semibold text-light" : "text-light"}`}
+                  href={link.href}
+                  aria-current={pathname === link.href ? "page" : undefined}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>

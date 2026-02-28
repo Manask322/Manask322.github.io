@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const experience = [
+  {
+    role: "Software Developer",
+    organization: "Independent / Personal Projects",
+    period: "2024 - Present",
+    highlights: [
+      "Built and maintained portfolio and project demos focused on usability and speed.",
+      "Developed automation utilities and reusable developer workflows.",
+      "Published technical learnings through concise write-ups."
+    ]
+  },
+  {
+    role: "Engineering Learner",
+    organization: "Open Source and Self-Driven Learning",
+    period: "2021 - 2024",
+    highlights: [
+      "Practiced full-stack and data-focused development workflows.",
+      "Improved debugging and testing habits through regular project iteration.",
+      "Explored machine learning and software architecture fundamentals."
+    ]
+  }
+];
+---
+
+<BaseLayout
+  title="Experience | Manas Kinkar"
+  description="Experience timeline of Manas Kinkar."
+  path="/experience/"
+>
+  <section class="container py-5">
+    <h1 class="mb-3">Experience</h1>
+    <p class="text-muted mb-4">
+      A concise timeline of roles, responsibilities, and key outcomes.
+    </p>
+    <div class="d-grid gap-4">
+      {
+        experience.map((item) => (
+          <article class="timeline-item">
+            <h2 class="h4 mb-1">{item.role}</h2>
+            <p class="mb-2 text-info">{item.organization} • {item.period}</p>
+            <ul>
+              {item.highlights.map((point) => <li>{point}</li>)}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

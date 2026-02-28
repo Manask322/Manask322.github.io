@@ -1,0 +1,7 @@
+---
+import LegacyRedirect from "../../components/LegacyRedirect.astro";
+
+const { slug } = Astro.params;
+---
+
+<LegacyRedirect to={`/blog/${slug}/`} />

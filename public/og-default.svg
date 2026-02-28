@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#111827" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="1030" cy="110" r="220" fill="#22d3ee" fill-opacity="0.2" />
+  <circle cx="140" cy="560" r="220" fill="#38bdf8" fill-opacity="0.2" />
+  <text x="90" y="290" font-size="72" fill="#e5e7eb" font-family="Arial, sans-serif" font-weight="700">
+    Manas Kinkar
+  </text>
+  <text x="90" y="360" font-size="38" fill="#94a3b8" font-family="Arial, sans-serif">
+    Developer Portfolio
+  </text>
+</svg>

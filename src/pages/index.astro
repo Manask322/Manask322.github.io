@@ -1,0 +1,60 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { projects } from "../data/projects";
+
+const featuredProjects = projects.slice(0, 2);
+---
+
+<BaseLayout
+  title="Manas Kinkar | Developer Portfolio"
+  description="Developer portfolio of Manas Kinkar: projects, writing, and experience."
+  path="/"
+>
+  <section class="container py-5">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <p class="text-uppercase text-info fw-semibold mb-2">Developer • Builder • Learner</p>
+        <h1 class="hero-title fw-bold mb-3">Hi, I am Manas Kinkar.</h1>
+        <p class="lead text-muted mb-4">
+          I build practical software, document what I learn, and focus on thoughtful product
+          experiences.
+        </p>
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-info" href="/projects/">View projects</a>
+          <a class="btn btn-outline-light" href="/blog/">Read blog</a>
+          <a class="btn btn-outline-light" href="/experience/">See experience</a>
+        </div>
+      </div>
+      <div class="col-lg-5 text-center">
+        <img
+          class="profile-image"
+          src="https://avatars0.githubusercontent.com/u/32352247?s=400&v=4"
+          alt="Portrait of Manas Kinkar"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="container pb-5">
+    <h2 class="h3 mb-3">Featured projects</h2>
+    <div class="row g-3">
+      {
+        featuredProjects.map((project) => (
+          <div class="col-md-6">
+            <article class="card h-100">
+              <div class="card-body">
+                <h3 class="h5 card-title">{project.title}</h3>
+                <p class="card-text text-muted">{project.summary}</p>
+                <p class="mb-0">
+                  <strong>Stack:</strong> {project.stack.join(", ")}
+                </p>
+              </div>
+            </article>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
