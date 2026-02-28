@@ -1,13 +1,80 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const experience = [
+  {
+    role: "Lead Software Development Engineer",
+    company: "Razorpay",
+    location: "Bengaluru, India",
+    period: "2024 – Present",
+    highlights: [
+      "Reduced cost per transaction by 25% through targeted cost optimization program across EC2, databases, logging, and GitHub Actions",
+      "Increased application reliability by implementing multi-step canary deployments and graceful shutdown handling for zero-downtime deployments", 
+      "Boosted developer velocity by optimizing GitHub Actions workflows, reducing PR merge time from 30+ minutes to 16 minutes",
+      "Served as Subject Matter Expert (SME) for UPI payments and primary design approver for all UPI-related architectures",
+      "Improved engineering quality by establishing unified end-to-end testing platform, reducing production incidents"
+    ]
+  },
+  {
+    role: "Senior Software Development Engineer", 
+    company: "Razorpay",
+    location: "Bengaluru, India",
+    period: "2022 – 2024",
+    highlights: [
+      "Migrated QR code and recurring UPI payment systems from monolithic to microservices architecture",
+      "Optimized UPI payment latency from 1.9s to 200ms through performance tuning and architectural refinements",
+      "Integrated new UPI features including GPay Card support and UPI Number, driving 10% increase in Net Revenue",
+      "Led technical interviews and campus hiring, evaluating 20+ candidates across machine coding and system design rounds"
+    ]
+  },
+  {
+    role: "Software Development Engineer",
+    company: "Razorpay", 
+    location: "Bengaluru, India",
+    period: "2020 – 2022",
+    highlights: [
+      "Built core UPI payment microservice in Go, enabling 10x throughput scaling and processing 1.5M+ transactions/day",
+      "Published open-source developer tools including gRPC service boilerplate, structured logging wrapper, and end-to-end testing framework",
+      "Improved fault tolerance and modular deployment capabilities for payment systems"
+    ]
+  }
+];
 ---
 
 <BaseLayout
   title="Experience | Manas Kinkar"
-  description="Experience of Manas Kinkar."
+  description="Professional experience of Manas Kinkar - Lead Software Development Engineer at Razorpay."
   path="/experience/"
 >
   <section class="container py-5">
-    <h1 class="mb-3">Experience</h1>
+    <h1 class="mb-4">Experience</h1>
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="d-grid gap-4">
+          {
+            experience.map((item) => (
+              <article class="timeline-item">
+                <h2 class="h4 mb-1">{item.role}</h2>
+                <p class="mb-2 text-info">{item.company} • {item.location} • {item.period}</p>
+                <ul class="list-unstyled">
+                  {item.highlights.map((point) => <li class="mb-2">• {point}</li>)}
+                </ul>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="h5 card-title">Education</h3>
+            <p class="mb-2"><strong>National Institute of Technology Karnataka (NITK)</strong></p>
+            <p class="mb-1">Bachelor of Technology in Information Technology</p>
+            <p class="mb-1">2016 – 2020 • Surathkal, India</p>
+            <p class="mb-0 text-muted">CGPA: 8.4/10</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 </BaseLayout>

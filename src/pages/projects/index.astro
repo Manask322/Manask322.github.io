@@ -1,13 +1,94 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const projects = [
+  {
+    title: "Core UPI Payment Microservice",
+    description: "Built the foundational UPI payment processing system in Go, handling 1.5M+ transactions daily with 10x throughput scaling.",
+    stack: ["Go", "Kubernetes", "Microservices", "Distributed Systems"],
+    type: "Professional Work"
+  },
+  {
+    title: "gRPC Service Boilerplate",
+    description: "Open-source developer tool providing structured foundation for gRPC services, accelerating internal development.",
+    stack: ["Go", "gRPC", "Open Source"],
+    type: "Open Source"
+  },
+  {
+    title: "Structured Logging Wrapper", 
+    description: "Published logging library improving observability and debugging across distributed systems.",
+    stack: ["Go", "Logging", "DevOps"],
+    type: "Open Source"
+  },
+  {
+    title: "End-to-End Testing Framework",
+    description: "Comprehensive testing platform enabling earlier bug detection and reducing production incidents.",
+    stack: ["Go", "Testing", "CI/CD"],
+    type: "Open Source"
+  }
+];
+
+const skills = {
+  "Languages": ["Go", "C/C++", "Java", "Python", "JavaScript", "PHP", "Bash"],
+  "Frameworks": ["LangChain", "LangGraph", "React.js", "Node.js", "Next.js", "Django"],
+  "DevOps": ["Kubernetes", "Prometheus", "Grafana", "Docker", "Service Mesh"],
+  "Databases": ["MySQL", "PostgreSQL", "MongoDB", "DynamoDB"],
+  "Core Areas": ["Microservices", "Distributed Systems", "System Design", "UPI Payments"]
+};
 ---
 
 <BaseLayout
-  title="Projects | Manas Kinkar"
-  description="Projects by Manas Kinkar."
+  title="Projects & Skills | Manas Kinkar"
+  description="Technical projects and skills of Manas Kinkar - UPI payment systems, Go microservices, and open-source tools."
   path="/projects/"
 >
   <section class="container py-5">
-    <h1 class="mb-3">Projects</h1>
+    <h1 class="mb-4">Projects & Skills</h1>
+    
+    <div class="row">
+      <div class="col-lg-8">
+        <h2 class="h3 mb-3">Notable Projects</h2>
+        <div class="d-grid gap-3 mb-5">
+          {
+            projects.map((project) => (
+              <article class="card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h3 class="h5 card-title mb-0">{project.title}</h3>
+                    <span class="badge bg-info text-dark">{project.type}</span>
+                  </div>
+                  <p class="card-text text-muted mb-3">{project.description}</p>
+                  <div class="d-flex flex-wrap gap-1">
+                    {project.stack.map((tech) => (
+                      <span class="badge bg-secondary">{tech}</span>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+      
+      <div class="col-lg-4">
+        <h2 class="h3 mb-3">Technical Skills</h2>
+        <div class="d-grid gap-3">
+          {
+            Object.entries(skills).map(([category, items]) => (
+              <div class="card">
+                <div class="card-body">
+                  <h3 class="h6 card-title text-info">{category}</h3>
+                  <div class="d-flex flex-wrap gap-1">
+                    {items.map((skill) => (
+                      <span class="badge bg-light text-dark">{skill}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
   </section>
 </BaseLayout>
