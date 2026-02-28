@@ -55,7 +55,7 @@ const experience = [
             experience.map((item) => (
               <article class="timeline-item">
                 <h2 class="h4 mb-1">{item.role}</h2>
-                <p class="mb-2 text-info">{item.company} • {item.location} • {item.period}</p>
+                <p class="mb-2" style="color: var(--accent-primary); font-weight: 500;">{item.company} • {item.location} • {item.period}</p>
                 <ul class="list-unstyled">
                   {item.highlights.map((point) => <li class="mb-2">• {point}</li>)}
                 </ul>

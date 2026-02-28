@@ -182,6 +182,22 @@ section {
   padding: clamp(2rem, 5vw, 4rem) 0;
 }
 
+/* Experience and Projects page specific styling */
+.timeline-item h2 {
+  color: var(--text-primary);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.timeline-item ul {
+  color: var(--text-secondary);
+}
+
+.timeline-item li {
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
 /* Stats cards styling */
 .stats-card {
   text-align: center;
