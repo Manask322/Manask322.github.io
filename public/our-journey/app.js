@@ -106,7 +106,14 @@
 
     const photos = (s.photos || []).map((p) => `<div class="photo">${imgTag(p)}</div>`).join("");
     const count = (s.photos || []).length;
-    const placeholder = s.blank ? "A photo we haven't taken yet" : upcoming ? "Memories coming soon" : "Add photos in journey.js";
+    const daysLeft = upcoming ? daysBetween(today, d) : 0;
+    const inDays = (n) => (n === 1 ? "Tomorrow!" : `in ${n} days`);
+    // no photos yet: blank pages keep their empty frame, upcoming stops get a
+    // countdown tile, past stops simply show no photo area
+    let media = photos;
+    if (!media && s.blank) media = `<div class="photo-placeholder">A photo we haven't taken yet</div>`;
+    else if (!media && upcoming)
+      media = `<div class="soon"><span class="soon-icon">${s.icon || "❤"}</span><span class="soon-days">${inDays(daysLeft)}</span><span class="soon-note">${s.milestone ? "Photos coming soon" : "Coming up"}</span></div>`;
     const dateText = s.dateLabel ? s.dateLabel : d ? fmt(d) : s.blank ? "Date: yet to be written" : "Date to add";
 
     li.innerHTML = `
@@ -115,11 +122,16 @@
         <p class="date">${dateText}${upcoming ? '<span class="badge">upcoming</span>' : ""}</p>
         <h2></h2>
         ${s.text ? '<p class="text"></p>' : ""}
-        <div class="photos${count === 1 ? " single" : ""}">${photos || `<div class="photo-placeholder">${placeholder}</div>`}</div>
+        ${media ? `<div class="photos${count === 1 || !photos ? " single" : ""}">${media}</div>` : ""}
       </article>`;
     li.querySelector("h2").textContent = s.title;
     if (s.text) li.querySelector(".text").textContent = s.text;
     li.querySelectorAll(".photo img").forEach((img) => (img.alt = s.title));
+    li._stop = s;
+    li._daysLeft = daysLeft;
+    if (s.milestone) li.querySelector(".card").addEventListener("click", (e) => {
+      if (e.target.tagName !== "IMG") celebrate(li);
+    });
     list.appendChild(li);
 
     // an envelope on the track right after this stop
@@ -400,20 +412,51 @@
     };
   })();
 
-  if ("IntersectionObserver" in window && !reduceMotion) {
-    let lastShow = 0;
-    const fwObserver = new IntersectionObserver(
+  // ---- Milestone celebration: big card over the screen + fireworks + poppers ----
+  const cb = document.getElementById("celebrate");
+  let cbTimer = null;
+  function celebrate(li) {
+    const st = li._stop;
+    const n = li._daysLeft;
+    cb.querySelector(".cb-icon").textContent = st.icon || "❤";
+    cb.querySelector(".cb-date").textContent = st.dateLabel || fmt(parse(st.date));
+    cb.querySelector(".cb-title").textContent = st.title;
+    cb.querySelector(".cb-count").textContent =
+      n > 1 ? `${n} days to go` : n === 1 ? "Tomorrow!" : parse(st.date) && parse(st.date).getTime() === today.getTime() ? "Today!" : "";
+    cb.querySelector(".cb-text").textContent = st.text || "";
+    clearTimeout(cbTimer);
+    cb.classList.remove("closing");
+    cb.setAttribute("aria-hidden", "false");
+    cb.classList.add("open");
+    document.body.classList.add("no-scroll");
+    if (!reduceMotion) setTimeout(fireworks, 250);
+  }
+  function closeCelebration() {
+    if (!cb.classList.contains("open")) return;
+    cb.classList.add("closing");
+    cbTimer = setTimeout(() => {
+      cb.classList.remove("open", "closing");
+      cb.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("no-scroll");
+    }, 500);
+  }
+  cb.addEventListener("click", closeCelebration);
+  document.addEventListener("keydown", (e) => e.key === "Escape" && closeCelebration());
+
+  if ("IntersectionObserver" in window) {
+    const celebrated = new Set();
+    const cbObserver = new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
-          // replay each time she scrolls back to it, but not more than once every 6s
-          if (e.isIntersecting && Date.now() - lastShow > 6000) {
-            lastShow = Date.now();
-            setTimeout(fireworks, 400);
-          }
+          if (!e.isIntersecting) return;
+          const li = e.target.closest(".stop");
+          if (celebrated.has(li) || lm.classList.contains("open")) return;
+          celebrated.add(li);
+          celebrate(li);
         }),
       { rootMargin: "-40% 0px -40% 0px" }
     );
-    document.querySelectorAll(".stop.milestone .station").forEach((el) => fwObserver.observe(el));
+    document.querySelectorAll(".stop.milestone .station").forEach((el) => cbObserver.observe(el));
   }
 
   // ---- Train glides along the track (rAF + lerp, transform only) ----
