@@ -11,6 +11,10 @@ window.JOURNEY = {
   subtitle: "Every station on the way to forever",
   birthdayNote: "Happy Birthday, Pranali ❤️",   // set to "" to hide
 
+  // Background music: put an mp3 in the music/ folder and write its path,
+  // e.g. "music/our-song.mp3". Leave "" for the built-in music-box tune.
+  music: "",
+
   // Date format: "YYYY-MM-DD". Leave date as "" until you have it.
   // Stations are shown in the order listed. Future dates show as "upcoming"
   // and the next milestone gets a live countdown.

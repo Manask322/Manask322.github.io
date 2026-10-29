@@ -53,11 +53,18 @@
 
   <canvas class="fireworks" id="fireworks" aria-hidden="true"></canvas>
 
+  <button class="music" id="music" type="button" aria-label="Play music" aria-pressed="false" hidden>
+    <span class="note">♪</span>
+    <span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  </button>
+  <p class="music-hint" id="music-hint">Tap anywhere for music ♪</p>
+
   <div class="lightbox" id="lightbox" aria-hidden="true">
     <img id="lightbox-img" alt="">
   </div>
 
   <script src="journey.js"></script>
   <script src="app.js"></script>
+  <script src="music.js"></script>
 </body>
 </html>

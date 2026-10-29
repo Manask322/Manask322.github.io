@@ -390,6 +390,75 @@ body {
   pointer-events: none;
 }
 
+/* ---------- Music button ---------- */
+.music {
+  position: fixed;
+  right: calc(1rem + env(safe-area-inset-right, 0px));
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  z-index: 8;
+  width: 3.1rem;
+  height: 3.1rem;
+  border-radius: 50%;
+  border: 1px solid rgba(200, 86, 107, .35);
+  background: rgba(255, 255, 255, .85);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 20px rgba(200, 86, 107, .25);
+  color: var(--rose);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+  animation: invite 2.4s ease-in-out infinite;
+}
+.music:active { transform: scale(.92); }
+.music .note { font-size: 1.4rem; line-height: 1; grid-area: 1 / 1; }
+.music .bars {
+  grid-area: 1 / 1;
+  display: none;
+  align-items: flex-end;
+  gap: 3px;
+  height: 18px;
+}
+.music .bars i {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  background: var(--rose);
+  transform-origin: bottom;
+  animation: eq 1s ease-in-out infinite;
+}
+.music .bars i:nth-child(2) { animation-delay: -.3s; }
+.music .bars i:nth-child(3) { animation-delay: -.6s; }
+.music .bars i:nth-child(4) { animation-delay: -.15s; }
+.music.playing { animation: none; }
+.music.playing .note { display: none; }
+.music.playing .bars { display: flex; }
+@keyframes eq { 0%, 100% { transform: scaleY(.3); } 50% { transform: scaleY(1); } }
+@keyframes invite {
+  0%, 100% { box-shadow: 0 6px 20px rgba(200, 86, 107, .25), 0 0 0 0 rgba(200, 86, 107, .35); }
+  50% { box-shadow: 0 6px 20px rgba(200, 86, 107, .25), 0 0 0 10px rgba(200, 86, 107, 0); }
+}
+.music-hint {
+  position: fixed;
+  right: calc(4.6rem + env(safe-area-inset-right, 0px));
+  bottom: calc(1.55rem + env(safe-area-inset-bottom, 0px));
+  z-index: 8;
+  margin: 0;
+  padding: .35rem .8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .9);
+  color: var(--rose);
+  font-size: .85rem;
+  box-shadow: 0 4px 14px rgba(59, 42, 42, .1);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity .6s var(--ease), transform .6s var(--ease);
+}
+.music-hint.show { opacity: 1; transform: none; }
+
 /* ---------- Lightbox ---------- */
 .lightbox {
   position: fixed;
