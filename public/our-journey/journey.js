@@ -51,35 +51,35 @@ window.JOURNEY = {
     { misc: ["misc"] },
 
     { date: "2026-07-28", icon: "🎤", title: "The mic moment",
-      text: "", photos: ["mic"] },
+      text: "One mic, two of us, and a moment I'll always replay. 🎤", photos: ["mic"] },
 
     { misc: ["misc_after_first_family_meet"] },
 
     { date: "2026-08-08", icon: "🏙️", title: "First day in HSR",
-      text: "", photos: ["first_day_hsr"] },
+      text: "Our first day in HSR, the start of a whole new chapter.", photos: ["first_day_hsr"] },
 
     { misc: ["misc_1"] },
 
     { date: "2026-08-13", icon: "💼", title: "The office date",
-      text: "", photos: ["office_date"] },
+      text: "Who said office days can't be dates? 😄", photos: ["office_date"] },
 
     { date: "2026-08-13", icon: "🌆", title: "A day out",
-      text: "", photos: ["day_out", "day_out_"] },
+      text: "A whole day, just the two of us, and it still felt too short.", photos: ["day_out", "day_out_"] },
 
     { date: "2026-08-14", icon: "☕", title: "Coffee makers",
-      text: "", photos: ["coffee_makers", "coffe_makers_1"] },
+      text: "Two coffees and endless conversations. ☕", photos: ["coffee_makers", "coffe_makers_1"] },
 
     { date: "2026-08-14", icon: "🔑", title: "The lost-key kand",
-      text: "", photos: ["key_lost_kand"] },
+      text: "Keys lost, plans changed, and still a memory we wouldn't trade. 🔑", photos: ["key_lost_kand"] },
 
     { date: "2026-08-15", icon: "📔", title: "HSR diaries",
-      text: "", photos: ["hsr_diaries"] },
+      text: "Pages from our HSR diary: small moments that mean the most.", photos: ["hsr_diaries"] },
 
     { date: "2026-08-16", icon: "🌹", title: "Our first date",
-      text: "", photos: ["first_date"] },
+      text: "Our first proper date. Butterflies, nervous smiles, and you. 🌹", photos: ["first_date"] },
 
     { date: "2026-08-18", icon: "🎁", title: "My gift",
-      text: "", photos: ["my_gift"] },
+      text: "My gift, and the smile that came with it. 🎁", photos: ["my_gift"] },
 
     { date: "2026-08-26", icon: "👨‍👩‍👧‍👦", title: "First complete family meet",
       text: "Everyone, together.", photos: ["final_complete_family_meet"],
@@ -88,25 +88,25 @@ window.JOURNEY = {
     { misc: ["misc_2"] },
 
     { date: "2026-09-19", icon: "🧳", title: "Our first trip",
-      text: "", photos: ["first_trip", "fist_trip_1", "fist_trip_2", "fist_trip_3", "fist_trip_4", "fist_trip_5"] },
+      text: "Our first trip together. New places, same us. 🧳", photos: ["first_trip", "fist_trip_1", "fist_trip_2", "fist_trip_3", "fist_trip_4", "fist_trip_5"] },
 
     { date: "2026-09-23", icon: "💕", title: "Many more dates",
       text: "And then we just couldn't stop meeting...", photos: ["misc_date_5", "misc_date_5_1", "misc_date_6"] },
 
     { date: "2026-09-27", icon: "🌃", title: "HSR date",
-      text: "", photos: ["hsr_date"] },
+      text: "Another evening in HSR, another favourite memory.", photos: ["hsr_date"] },
 
     { date: "2026-10-01", icon: "🥂", title: "Meeting the friends",
-      text: "", photos: ["friends_meetup", "friends_meetup_1"] },
+      text: "When our worlds, and our friends, came together. 🥂", photos: ["friends_meetup", "friends_meetup_1"] },
 
     { date: "2026-10-02", icon: "✈️", title: "Our first flight",
-      text: "", photos: ["first_flight", "first_flight_1"] },
+      text: "Our first flight together. Window seat, your hand in mine. ✈️", photos: ["first_flight", "first_flight_1"] },
 
     { date: "2026-10-17", icon: "🛍️", title: "Pune meetup for shopping",
-      text: "", photos: ["pune_shopping"] },
+      text: "Shopping in Pune: you picked, I nodded, we both smiled. 🛍️", photos: ["pune_shopping"] },
 
     { date: "2026-10-18", dateLabel: "18 – 19 October 2026", icon: "🍦", title: "Pune hangout at FC Road",
-      text: "", photos: ["pune_date", "pune_date_1", "pune_date_2"],
+      text: "FC Road evenings, street food and long talks. 🍦", photos: ["pune_date", "pune_date_1", "pune_date_2"],
       letter: "In Pune, I saw a different version of you, someone who is ready to spend her complete life with me, someone who cares a lot about me, is responsible and ready to create a new family of her own. I saw a girl transform into a woman. The woman of my dreams. \"Meri Pasandita Aurat :p\"" },
 
     { date: "2026-10-31", icon: "🚉", title: "Solapur meetup",
