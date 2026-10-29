@@ -9,7 +9,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💞</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Dancing+Script:wght@600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -60,7 +60,25 @@
   <p class="music-hint" id="music-hint">Tap anywhere for music ♪</p>
 
   <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lb-nav lb-prev" type="button" aria-label="Previous photo">‹</button>
     <img id="lightbox-img" alt="">
+    <button class="lb-nav lb-next" type="button" aria-label="Next photo">›</button>
+  </div>
+
+  <div class="letter" id="letter" aria-hidden="true">
+    <div class="lm-env" aria-hidden="true">
+      <div class="lm-back"></div>
+      <div class="lm-slip"></div>
+      <div class="lm-front"></div>
+      <div class="lm-flap"><span class="lm-seal">❤</span></div>
+    </div>
+    <article class="lm-paper" role="dialog" aria-modal="true" aria-labelledby="letter-title">
+      <button class="lm-close" type="button" aria-label="Close letter">✕</button>
+      <p class="lm-for" id="letter-title"></p>
+      <p class="lm-dear">Dear Pranali,</p>
+      <div class="lm-text" id="letter-text"></div>
+      <p class="lm-sign">Yours, Manas</p>
+    </article>
   </div>
 
   <script src="journey.js"></script>

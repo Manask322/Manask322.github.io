@@ -77,17 +77,35 @@
     }
   }
 
-  // ---- Stations ----
+  // ---- Stations, little polaroid moments and letters ----
   const list = document.getElementById("stops");
+  // "first_trip" → photos/first_trip-t.jpg (grid) + photos/first_trip.jpg (full screen)
+  const src = (p) => (/\.\w+$/.test(p) ? [`photos/${p}`, `photos/${p}`] : [`photos/${p}-t.jpg`, `photos/${p}.jpg`]);
+  const imgTag = (p) => {
+    const [thumb, full] = src(p);
+    return `<img src="${thumb}" data-full="${full}" alt="" loading="lazy" decoding="async">`;
+  };
+  let side = "left";
+
   J.stops.forEach((s) => {
+    // polaroids between stations, on the empty side of the track
+    if (s.misc) {
+      const li = document.createElement("li");
+      li.className = "interlude " + side; // the empty side beside the previous card
+      li.innerHTML = s.misc.map((p) => `<figure class="polaroid">${imgTag(p)}</figure>`).join("");
+      li.querySelectorAll("img").forEach((img) => (img.alt = "A little moment"));
+      list.appendChild(li);
+      return;
+    }
+
     const d = parse(s.date);
     const upcoming = !!d && d > today;
     const li = document.createElement("li");
-    li.className = "stop" + (s.milestone ? " milestone" : "") + (upcoming ? " upcoming" : "") + (s.blank ? " blank" : "");
+    li.className = `stop ${side}` + (s.milestone ? " milestone" : "") + (upcoming ? " upcoming" : "") + (s.blank ? " blank" : "");
+    side = side === "left" ? "right" : "left";
 
-    const photos = (s.photos || [])
-      .map((p) => `<div class="photo"><img src="photos/${p}" alt="" loading="lazy" decoding="async"></div>`)
-      .join("");
+    const photos = (s.photos || []).map((p) => `<div class="photo">${imgTag(p)}</div>`).join("");
+    const count = (s.photos || []).length;
     const placeholder = s.blank ? "A photo we haven't taken yet" : upcoming ? "Memories coming soon" : "Add photos in journey.js";
     const dateText = d ? fmt(d) : s.blank ? "Date: yet to be written" : "Date to add";
 
@@ -96,23 +114,43 @@
       <article class="card">
         <p class="date">${dateText}${upcoming ? '<span class="badge">upcoming</span>' : ""}</p>
         <h2></h2>
-        <p class="text"></p>
-        <div class="photos">${photos || `<div class="photo-placeholder">${placeholder}</div>`}</div>
+        ${s.text ? '<p class="text"></p>' : ""}
+        <div class="photos${count === 1 ? " single" : ""}">${photos || `<div class="photo-placeholder">${placeholder}</div>`}</div>
       </article>`;
     li.querySelector("h2").textContent = s.title;
-    li.querySelector(".text").textContent = s.text || "";
+    if (s.text) li.querySelector(".text").textContent = s.text;
     li.querySelectorAll(".photo img").forEach((img) => (img.alt = s.title));
     list.appendChild(li);
+
+    // an envelope on the track right after this stop
+    if (s.letter) {
+      const env = document.createElement("li");
+      env.className = "letter-stop";
+      env.innerHTML = `
+        <button class="envelope" type="button" aria-label="Open the letter: ${s.title.replace(/"/g, "")}">
+          <svg viewBox="0 0 48 34" aria-hidden="true">
+            <rect x="1.5" y="1.5" width="45" height="31" rx="4" fill="#fffaf2" stroke="#c9a24a" stroke-width="2"/>
+            <path d="M3 4l21 15L45 4" fill="none" stroke="#c9a24a" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="24" cy="19" r="6" fill="#c8566b"/>
+            <path d="M24 22.2c-2.3-1.7-3.4-2.9-3.4-4.1a1.7 1.7 0 0 1 3.4-.5 1.7 1.7 0 0 1 3.4.5c0 1.2-1.1 2.4-3.4 4.1z" fill="#fff"/>
+          </svg>
+        </button>
+        <span class="letter-label">A letter for you</span>`;
+      env._letter = s;
+      env.querySelector(".envelope").addEventListener("click", () => openLetter(s));
+      list.appendChild(env);
+    }
   });
 
   // Fade each photo in once it has actually loaded (no half-drawn images)
-  list.querySelectorAll(".photo img").forEach((img) => {
+  list.querySelectorAll("img").forEach((img) => {
     const done = () => img.classList.add("loaded");
     if (img.complete && img.naturalWidth) done();
     else img.addEventListener("load", done, { once: true });
   });
 
-  // ---- Reveal stations as they scroll in ----
+  // ---- Reveal as they scroll in ----
+  const revealables = document.querySelectorAll(".stop, .interlude, .letter-stop");
   if ("IntersectionObserver" in window && !reduceMotion) {
     const io = new IntersectionObserver(
       (entries) =>
@@ -124,9 +162,72 @@
         }),
       { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
     );
-    document.querySelectorAll(".stop").forEach((el) => io.observe(el));
+    revealables.forEach((el) => io.observe(el));
   } else {
-    document.querySelectorAll(".stop").forEach((el) => el.classList.add("visible"));
+    revealables.forEach((el) => el.classList.add("visible"));
+  }
+
+  // ---- Letters: open by themselves once she scrolls past the envelope ----
+  const lm = document.getElementById("letter");
+  const lmTitle = document.getElementById("letter-title");
+  const lmText = document.getElementById("letter-text");
+  let letterTimers = [], closeTimer = null;
+  const autoOpened = new Set();
+
+  function openLetter(s) {
+    if (lm.classList.contains("open") && !lm.classList.contains("closing")) return;
+    clearTimeout(closeTimer);
+    letterTimers.forEach(clearTimeout);
+    lm.classList.remove("open", "flap", "peek", "read", "closing");
+    lmTitle.textContent = s.title;
+    lmText.textContent = s.letter;
+    lm.querySelector(".lm-paper").scrollTop = 0;
+    document.body.classList.add("no-scroll");
+    lm.setAttribute("aria-hidden", "false");
+    lm.classList.add("open");                                       // envelope pops in
+    letterTimers.push(setTimeout(() => lm.classList.add("flap"), reduceMotion ? 0 : 650));    // flap lifts
+    letterTimers.push(setTimeout(() => lm.classList.add("peek"), reduceMotion ? 0 : 1150));   // letter slides out
+    letterTimers.push(setTimeout(() => {                            // letter unfolds into the card
+      lm.classList.add("read");
+      lm.querySelector(".lm-close").focus({ preventScroll: true });
+    }, reduceMotion ? 0 : 1750));
+  }
+  function closeLetter() {
+    if (!lm.classList.contains("open") || lm.classList.contains("closing")) return;
+    letterTimers.forEach(clearTimeout);
+    lm.classList.add("closing");
+    closeTimer = setTimeout(() => {
+      lm.classList.remove("open", "flap", "peek", "read", "closing");
+      lm.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("no-scroll");
+    }, 450);
+  }
+  lm.querySelector(".lm-close").addEventListener("click", closeLetter);
+  lm.addEventListener("click", (e) => { if (e.target === lm) closeLetter(); });
+  document.addEventListener("keydown", (e) => e.key === "Escape" && closeLetter());
+
+  if ("IntersectionObserver" in window) {
+    const letterIO = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          // open only when the envelope moves from below to above the 40% line,
+          // i.e. she has just scrolled past that step (not on a reload mid-page)
+          const li = e.target;
+          const above = !e.isIntersecting && e.boundingClientRect.top < window.innerHeight * 0.4;
+          const wasAbove = li._above;
+          li._above = above;
+          if (above && wasAbove === false) {
+            if (autoOpened.has(li)) return;
+            autoOpened.add(li);
+            letterIO.unobserve(li);
+            if (!lm.classList.contains("open") && !document.getElementById("lightbox").classList.contains("open")) {
+              openLetter(li._letter);
+            }
+          }
+        }),
+      { rootMargin: "-40% 0px 0px 0px" }
+    );
+    document.querySelectorAll(".letter-stop").forEach((el) => letterIO.observe(el));
   }
 
   // ---- Fireworks when a milestone (engagement, wedding) reaches the middle of the screen ----
@@ -353,21 +454,49 @@
   measure();
   onScroll();
 
-  // ---- Lightbox (fades + scales in, tap anywhere or Esc to close) ----
+  // ---- Lightbox: tap a photo, swipe / arrows to move through all photos ----
   const lb = document.getElementById("lightbox");
   const lbImg = document.getElementById("lightbox-img");
-  const close = () => {
+  const gallery = Array.from(list.querySelectorAll("img"));
+  let photoIndex = 0;
+  function showPhoto(i) {
+    photoIndex = (i + gallery.length) % gallery.length;
+    const img = gallery[photoIndex];
+    lbImg.classList.remove("in");
+    lbImg.src = img.dataset.full || img.src;
+    lbImg.alt = img.alt;
+    requestAnimationFrame(() => requestAnimationFrame(() => lbImg.classList.add("in")));
+  }
+  const closeLb = () => {
     lb.classList.remove("open");
     lb.setAttribute("aria-hidden", "true");
   };
   list.addEventListener("click", (e) => {
-    if (e.target.tagName === "IMG") {
-      lbImg.src = e.target.src;
-      lbImg.alt = e.target.alt;
-      lb.classList.add("open");
-      lb.setAttribute("aria-hidden", "false");
+    const i = gallery.indexOf(e.target);
+    if (i < 0) return;
+    lbImg.src = e.target.src; // show the thumbnail instantly, swap to full size
+    showPhoto(i);
+    lb.classList.add("open");
+    lb.setAttribute("aria-hidden", "false");
+  });
+  lb.querySelector(".lb-prev").addEventListener("click", (e) => { e.stopPropagation(); showPhoto(photoIndex - 1); });
+  lb.querySelector(".lb-next").addEventListener("click", (e) => { e.stopPropagation(); showPhoto(photoIndex + 1); });
+  lb.addEventListener("click", closeLb);
+  let touchX = null;
+  lb.addEventListener("touchstart", (e) => (touchX = e.touches[0].clientX), { passive: true });
+  lb.addEventListener("touchend", (e) => {
+    if (touchX === null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    touchX = null;
+    if (Math.abs(dx) > 50) {
+      e.preventDefault(); // a swipe, not a tap → don't close
+      showPhoto(photoIndex + (dx < 0 ? 1 : -1));
     }
   });
-  lb.addEventListener("click", close);
-  document.addEventListener("keydown", (e) => e.key === "Escape" && close());
+  document.addEventListener("keydown", (e) => {
+    if (!lb.classList.contains("open")) return;
+    if (e.key === "Escape") closeLb();
+    if (e.key === "ArrowRight") showPhoto(photoIndex + 1);
+    if (e.key === "ArrowLeft") showPhoto(photoIndex - 1);
+  });
 })();
