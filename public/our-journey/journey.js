@@ -11,53 +11,52 @@ window.JOURNEY = {
   subtitle: "Every station on the way to forever",
   birthdayNote: "Happy Birthday, Pranali ❤️",   // set to "" to hide
 
-  // Date format: "YYYY-MM-DD". Stations are shown in the order listed.
-  // Stations with a future date automatically show as "upcoming"
-  // and the next one gets a live countdown.
+  // Date format: "YYYY-MM-DD". Leave date as "" until you have it.
+  // Stations are shown in the order listed. Future dates show as "upcoming"
+  // and the next milestone gets a live countdown.
+  //   milestone: true  → gold station + fireworks & party poppers
+  //   blank: true      → an "empty page" memory still to be made
   stops: [
-    {
-      date: "2025-01-01",
-      title: "The first hello",
-      text: "Where we started talking. Write the story here.",
-      photos: [],
-      icon: "💬"
-    },
-    {
-      date: "2025-02-01",
-      title: "The day we first met",
-      text: "Where, what you wore, what I thought...",
-      photos: [],
-      icon: "☕"
-    },
-    {
-      date: "2025-06-01",
-      title: "A memory to add",
-      text: "Placeholder: a trip, a date, a silly moment.",
-      photos: [],
-      icon: "📸"
-    },
-    {
-      date: "2026-11-15",
-      title: "Our Engagement",
-      text: "The day we make it official.",
-      photos: [],
-      icon: "💍",
-      milestone: true
-    },
-    {
-      date: "2027-03-01",
-      title: "New memories ahead",
-      text: "We'll fill this in together.",
-      photos: [],
-      icon: "✨"
-    },
-    {
-      date: "2027-07-09",
-      title: "Our Wedding",
-      text: "The last station of this line, and the start of a new one.",
-      photos: [],
-      icon: "💒",
-      milestone: true
-    }
+    { date: "", icon: "🌹", title: "Our 1st date",
+      text: "Where we went, what we talked about...", photos: [] },
+
+    { date: "", icon: "☕", title: "Our 2nd date",
+      text: "Write the story here.", photos: [] },
+
+    { date: "", icon: "🍿", title: "Our 3rd date",
+      text: "Write the story here.", photos: [] },
+
+    { date: "", icon: "👨‍👩‍👧", title: "First family meet",
+      text: "The first time our families met.", photos: [] },
+
+    { date: "", icon: "👨‍👩‍👧‍👦", title: "First complete family meet",
+      text: "Everyone, together for the first time.", photos: [] },
+
+    { date: "", icon: "💕", title: "Many more dates",
+      text: "And then we just couldn't stop meeting...", photos: [] },
+
+    { date: "", icon: "🛍️", title: "Pune meetup for shopping",
+      text: "Write the story here.", photos: [] },
+
+    { date: "", icon: "🍦", title: "Pune hangout at FC Road",
+      text: "Write the story here.", photos: [] },
+
+    { date: "", icon: "🚉", title: "Solapur meetup",
+      text: "Write the story here.", photos: [] },
+
+    { date: "2026-11-15", icon: "💍", title: "Our Engagement",
+      text: "The day we make it official.", photos: [], milestone: true },
+
+    { date: "", icon: "✏️", title: "A memory we haven't made yet",
+      text: "This page is still empty. We'll fill it together.", photos: [], blank: true },
+
+    { date: "", icon: "✏️", title: "Another one, waiting for us",
+      text: "Somewhere between the ring and the mandap...", photos: [], blank: true },
+
+    { date: "", icon: "✏️", title: "And one more...",
+      text: "Blank for now, but not for long.", photos: [], blank: true },
+
+    { date: "2027-07-09", icon: "💒", title: "Our Wedding",
+      text: "The last station of this line, and the start of a new one.", photos: [], milestone: true }
   ]
 };

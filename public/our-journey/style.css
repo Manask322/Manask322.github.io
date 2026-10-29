@@ -299,6 +299,26 @@ body {
   padding: .5rem;
 }
 
+/* "Empty page" stops: memories still to be made, drawn like an unwritten notebook page */
+.stop.blank .station {
+  border: 2px dashed var(--muted);
+  background: var(--bg);
+  font-size: 1rem;
+}
+.stop.blank .card {
+  background:
+    repeating-linear-gradient(to bottom, transparent 0 27px, rgba(200, 86, 107, .14) 27px 28px),
+    rgba(255, 255, 255, .55);
+  border: 2px dashed rgba(200, 86, 107, .35);
+  box-shadow: none;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.stop.blank .date { color: var(--muted); font-style: italic; }
+.stop.blank h2 { color: var(--muted); }
+.stop.blank .text { color: var(--muted); font-style: italic; }
+.stop.blank .photo-placeholder { border-color: rgba(138, 111, 106, .3); background: rgba(255,255,255,.4); }
+
 /* ---------- Reveal on scroll (only when JS is running) ---------- */
 .js .stop .station {
   transform: scale(.4);
@@ -360,6 +380,16 @@ body {
   color: var(--rose);
 }
 
+/* ---------- Fireworks over the milestones ---------- */
+.fireworks {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  pointer-events: none;
+}
+
 /* ---------- Lightbox ---------- */
 .lightbox {
   position: fixed;
@@ -392,5 +422,5 @@ body {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
   .hero > *, .js .stop .card, .js .stop .card > *, .js .stop .station { opacity: 1; transform: none; }
-  .petals { display: none; }
+  .petals, .fireworks { display: none; }
 }
