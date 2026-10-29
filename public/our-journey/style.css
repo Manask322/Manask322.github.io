@@ -7,12 +7,14 @@
   --gold: #c9a24a;
   --card: #ffffff;
   --rail: #6b4f4a;
+  --ease: cubic-bezier(.22, 1, .36, 1);   /* soft "ease-out-quint" */
+  --rail-x: 2.25rem;                       /* where the track sits */
 }
 
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
 
 body {
   margin: 0;
@@ -20,19 +22,34 @@ body {
   color: var(--ink);
   font-family: "Lora", Georgia, serif;
   line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 /* ---------- Hero ---------- */
 .hero {
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 2rem 1.25rem;
   background: radial-gradient(ellipse at top, var(--rose-soft), var(--bg) 70%);
 }
+.hero > * {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: rise 1.1s var(--ease) forwards;
+}
+.hero > :nth-child(1) { animation-delay: .15s; }
+.hero > :nth-child(2) { animation-delay: .35s; }
+.hero > :nth-child(3) { animation-delay: .55s; }
+.hero > :nth-child(4) { animation-delay: .75s; }
+.hero > :nth-child(5) { animation-delay: .95s; }
+@keyframes rise { to { opacity: 1; transform: none; } }
+
 .birthday {
   font-family: "Dancing Script", cursive;
   font-size: 1.6rem;
@@ -41,7 +58,7 @@ body {
 }
 .hero h1 {
   font-family: "Dancing Script", cursive;
-  font-size: clamp(3rem, 10vw, 5.5rem);
+  font-size: clamp(2.8rem, 12vw, 5.5rem);
   margin: 0;
   line-height: 1.1;
 }
@@ -60,11 +77,13 @@ body {
   color: var(--rose);
   text-decoration: none;
   border: 1px solid var(--rose);
-  padding: .6rem 1.4rem;
+  padding: .7rem 1.5rem;
   border-radius: 999px;
-  transition: background .2s, color .2s;
+  transition: background .4s var(--ease), color .4s var(--ease);
 }
 .start:hover { background: var(--rose); color: #fff; }
+.start .arrow { display: inline-block; animation: nudge 2s ease-in-out 2s infinite; }
+@keyframes nudge { 0%, 100% { transform: none; } 50% { transform: translateY(4px); } }
 
 /* ---------- The line (track + stations) ---------- */
 .line {
@@ -78,7 +97,7 @@ body {
 .track {
   position: absolute;
   top: 0; bottom: 0;
-  left: 2.25rem;
+  left: var(--rail-x);
   width: 18px;
   transform: translateX(-50%);
   border-left: 3px solid var(--rail);
@@ -89,17 +108,35 @@ body {
     rgba(107, 79, 74, .35) 10px 14px
   );
 }
+/* The part of the track already travelled glows rose → gold */
+.trail {
+  position: absolute;
+  top: 0;
+  left: var(--rail-x);
+  width: 4px;
+  height: 100%;
+  margin-left: -2px;
+  background: linear-gradient(var(--rose), var(--gold));
+  border-radius: 2px;
+  transform-origin: top;
+  transform: scaleY(0);
+  opacity: .85;
+  will-change: transform;
+}
 
 .train {
   position: absolute;
-  left: 2.25rem;
+  left: var(--rail-x);
   top: 0;
   font-size: 2rem;
-  transform: translate(-50%, 0) rotate(90deg);
-  transition: top .15s linear;
+  line-height: 1;
+  margin-left: -1rem;
   z-index: 2;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,.2));
+  will-change: transform;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,.2));
 }
+.train span { display: block; transform: rotate(-90deg); animation: chug .6s ease-in-out infinite; }
+@keyframes chug { 50% { transform: rotate(-90deg) translateX(-1.5px); } }
 
 .stops { list-style: none; margin: 0; padding: 0; }
 
@@ -107,19 +144,15 @@ body {
   position: relative;
   padding-left: 4.5rem;
   margin-bottom: 4rem;
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity .7s ease, transform .7s ease;
 }
-.stop.visible { opacity: 1; transform: none; }
 
 .station {
   position: absolute;
-  left: 2.25rem;
+  left: var(--rail-x);
   top: .5rem;
   width: 2.6rem;
   height: 2.6rem;
-  transform: translateX(-50%);
+  margin-left: -1.3rem;
   border-radius: 50%;
   background: var(--card);
   border: 3px solid var(--rose);
@@ -130,11 +163,17 @@ body {
 }
 .stop.milestone .station {
   width: 3.4rem; height: 3.4rem;
+  margin-left: -1.7rem;
   border-color: var(--gold);
   box-shadow: 0 0 0 6px rgba(201, 162, 74, .2);
   font-size: 1.6rem;
 }
 .stop.upcoming .station { border-style: dashed; }
+.stop.milestone.visible .station { animation: glow 2.4s ease-in-out 1s infinite; }
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 0 6px rgba(201, 162, 74, .2); }
+  50% { box-shadow: 0 0 0 12px rgba(201, 162, 74, .06); }
+}
 
 .card {
   background: var(--card);
@@ -166,7 +205,7 @@ body {
   margin: .2rem 0 .5rem;
   line-height: 1.2;
 }
-.card p.text { margin: 0; white-space: pre-line; }
+.card p.text { margin: 0; white-space: pre-line; overflow-wrap: anywhere; }
 
 .photos {
   display: grid;
@@ -174,15 +213,26 @@ body {
   gap: .6rem;
   margin-top: 1rem;
 }
-.photos img {
-  width: 100%;
+.photo {
   aspect-ratio: 1;
-  object-fit: cover;
   border-radius: 10px;
-  cursor: zoom-in;
-  transition: transform .2s;
+  overflow: hidden;
+  background: var(--rose-soft);
 }
-.photos img:hover { transform: scale(1.03); }
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  cursor: zoom-in;
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity .9s var(--ease), transform .9s var(--ease);
+}
+.photo img.loaded { opacity: 1; transform: none; }
+@media (hover: hover) {
+  .photo img.loaded:hover { transform: scale(1.04); }
+}
 .photo-placeholder {
   aspect-ratio: 1;
   border: 2px dashed var(--rose-soft);
@@ -195,13 +245,56 @@ body {
   padding: .5rem;
 }
 
-/* Desktop: track in the middle, cards alternate sides */
+/* ---------- Reveal on scroll (only when JS is running) ---------- */
+.js .stop .station {
+  transform: scale(.4);
+  opacity: 0;
+  transition: transform .8s var(--ease), opacity .6s var(--ease);
+}
+.js .stop .card {
+  opacity: 0;
+  transform: translate3d(0, 40px, 0) scale(.98);
+  transition: opacity 1s var(--ease), transform 1.1s var(--ease);
+}
+.js .stop .card > * {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+  transition: opacity .8s var(--ease), transform .9s var(--ease);
+}
+.js .stop.visible .station,
+.js .stop.visible .card,
+.js .stop.visible .card > * { opacity: 1; transform: none; }
+.js .stop.visible .card > :nth-child(1) { transition-delay: .15s; }
+.js .stop.visible .card > :nth-child(2) { transition-delay: .25s; }
+.js .stop.visible .card > :nth-child(3) { transition-delay: .35s; }
+.js .stop.visible .card > :nth-child(4) { transition-delay: .45s; }
+
+/* Phones: slimmer gutter, tighter cards, two-up photos */
+@media (max-width: 799px) {
+  :root { --rail-x: 1.5rem; }
+  .line { padding: 3rem .9rem 4rem 0; }
+  .track { width: 14px; }
+  .train { font-size: 1.6rem; margin-left: -.8rem; }
+  .stop { padding-left: 3.25rem; margin-bottom: 2.5rem; }
+  .station { width: 2.3rem; height: 2.3rem; margin-left: -1.15rem; font-size: 1rem; }
+  .stop.milestone .station { width: 2.8rem; height: 2.8rem; margin-left: -1.4rem; font-size: 1.3rem; }
+  .card { padding: 1rem 1.1rem; border-radius: 14px; }
+  .card h2 { font-size: 1.75rem; }
+  .photos { grid-template-columns: repeat(2, 1fr); gap: .5rem; }
+  .countdown { padding: .8rem 1.2rem; }
+  .end { font-size: 1.5rem; }
+}
+
+/* Desktop: track in the middle, cards alternate sides and slide in from their side */
 @media (min-width: 800px) {
-  .track, .train, .station { left: 50%; }
+  :root { --rail-x: 50%; }
   .stop { width: 50%; padding-left: 0; padding-right: 3.5rem; }
   .stop:nth-child(even) { margin-left: 50%; padding-left: 3.5rem; padding-right: 0; }
   .stop .station { left: 100%; }
   .stop:nth-child(even) .station { left: 0; }
+  .js .stop:nth-child(odd) .card { transform: translate3d(-40px, 20px, 0) scale(.98); }
+  .js .stop:nth-child(even) .card { transform: translate3d(40px, 20px, 0) scale(.98); }
+  .js .stop.visible .card { transform: none; }
 }
 
 /* ---------- Footer ---------- */
@@ -217,17 +310,32 @@ body {
 .lightbox {
   position: fixed;
   inset: 0;
-  background: rgba(20, 10, 10, .9);
+  background: rgba(20, 10, 10, .92);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   display: grid;
   place-items: center;
   z-index: 10;
   cursor: zoom-out;
   padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .45s var(--ease), visibility 0s linear .45s;
 }
-.lightbox img { max-width: 100%; max-height: 90vh; border-radius: 8px; }
+.lightbox.open { opacity: 1; visibility: visible; transition: opacity .45s var(--ease); }
+.lightbox img {
+  max-width: 100%;
+  max-height: 88vh;
+  max-height: 88svh;
+  border-radius: 8px;
+  transform: scale(.92);
+  transition: transform .55s var(--ease);
+}
+.lightbox.open img { transform: none; }
 
+/* ---------- Respect "reduce motion" ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .stop { opacity: 1; transform: none; transition: none; }
-  .train { transition: none; }
+  *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
+  .hero > *, .js .stop .card, .js .stop .card > *, .js .stop .station { opacity: 1; transform: none; }
 }

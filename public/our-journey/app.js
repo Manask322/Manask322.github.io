@@ -1,7 +1,10 @@
 (function () {
+  document.documentElement.classList.add("js");
+
   const J = window.JOURNEY;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const parse = (s) => {
     const [y, m, d] = s.split("-").map(Number);
@@ -20,17 +23,33 @@
   bday.hidden = !J.birthdayNote;
   document.getElementById("footer").textContent = `${J.me} ❤ ${J.her}`;
 
-  // ---- Countdown to the next milestone (or next stop) ----
+  // ---- Countdown to the next milestone (or next stop), counting up on load ----
   const future = J.stops.filter((s) => parse(s.date) >= today);
   const next = future.find((s) => s.milestone) || future[0];
   if (next) {
     const n = daysBetween(today, parse(next.date));
     const cd = document.getElementById("countdown");
-    cd.innerHTML =
-      n === 0
-        ? `<strong>Today!</strong>${next.title}`
-        : `<strong>${n} day${n === 1 ? "" : "s"}</strong>until ${next.title}`;
     cd.hidden = false;
+    if (n === 0) {
+      cd.innerHTML = `<strong>Today!</strong>`;
+      cd.append(next.title);
+    } else {
+      cd.innerHTML = `<strong>0 days</strong>until `;
+      cd.append(next.title);
+      const num = cd.querySelector("strong");
+      const label = (v) => `${v} day${v === 1 ? "" : "s"}`;
+      if (reduceMotion) {
+        num.textContent = label(n);
+      } else {
+        const start = performance.now() + 700, dur = 1400;
+        const tick = (t) => {
+          const p = Math.min(1, Math.max(0, (t - start) / dur));
+          num.textContent = label(Math.round(n * (1 - Math.pow(1 - p, 4))));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      }
+    }
   }
 
   // ---- Stations ----
@@ -42,7 +61,7 @@
     li.className = "stop" + (s.milestone ? " milestone" : "") + (upcoming ? " upcoming" : "");
 
     const photos = (s.photos || [])
-      .map((p) => `<img src="photos/${p}" alt="${s.title}" loading="lazy">`)
+      .map((p) => `<div class="photo"><img src="photos/${p}" alt="" loading="lazy" decoding="async"></div>`)
       .join("");
     const placeholder = upcoming ? "Memories coming soon" : "Add photos in journey.js";
 
@@ -56,38 +75,86 @@
       </article>`;
     li.querySelector("h2").textContent = s.title;
     li.querySelector(".text").textContent = s.text || "";
+    li.querySelectorAll(".photo img").forEach((img) => (img.alt = s.title));
     list.appendChild(li);
   });
 
-  // ---- Reveal stations as they scroll in ----
-  const io = new IntersectionObserver(
-    (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add("visible")),
-    { threshold: 0.15 }
-  );
-  document.querySelectorAll(".stop").forEach((el) => io.observe(el));
+  // Fade each photo in once it has actually loaded (no half-drawn images)
+  list.querySelectorAll(".photo img").forEach((img) => {
+    const done = () => img.classList.add("loaded");
+    if (img.complete && img.naturalWidth) done();
+    else img.addEventListener("load", done, { once: true });
+  });
 
-  // ---- Train moves along the track with scroll ----
+  // ---- Reveal stations as they scroll in ----
+  if ("IntersectionObserver" in window && !reduceMotion) {
+    const io = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("visible");
+            io.unobserve(e.target);
+          }
+        }),
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+    );
+    document.querySelectorAll(".stop").forEach((el) => io.observe(el));
+  } else {
+    document.querySelectorAll(".stop").forEach((el) => el.classList.add("visible"));
+  }
+
+  // ---- Train glides along the track (rAF + lerp, transform only) ----
   const line = document.getElementById("line");
   const train = document.getElementById("train");
-  function moveTrain() {
-    const r = line.getBoundingClientRect();
-    const progress = (window.innerHeight * 0.5 - r.top) / r.height;
-    const clamped = Math.max(0, Math.min(1, progress));
-    train.style.top = clamped * (line.offsetHeight - 40) + "px";
-  }
-  window.addEventListener("scroll", moveTrain, { passive: true });
-  window.addEventListener("resize", moveTrain);
-  moveTrain();
+  const trail = document.getElementById("trail");
+  let target = 0, current = 0, running = false, lineTop = 0, lineHeight = 1;
 
-  // ---- Lightbox ----
+  function measure() {
+    lineTop = line.getBoundingClientRect().top + window.scrollY;
+    lineHeight = line.offsetHeight;
+  }
+  function computeTarget() {
+    const progress = (window.scrollY + window.innerHeight * 0.5 - lineTop) / lineHeight;
+    target = Math.max(0, Math.min(1, progress));
+  }
+  function render() {
+    current += (target - current) * (reduceMotion ? 1 : 0.12);
+    if (Math.abs(target - current) < 0.0005) current = target;
+    const y = current * (lineHeight - 40);
+    train.style.transform = `translate3d(0, ${y}px, 0)`;
+    trail.style.transform = `scaleY(${(y + 20) / lineHeight})`;
+    if (current !== target) requestAnimationFrame(render);
+    else running = false;
+  }
+  function onScroll() {
+    computeTarget();
+    if (!running) {
+      running = true;
+      requestAnimationFrame(render);
+    }
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", () => { measure(); onScroll(); });
+  window.addEventListener("load", () => { measure(); onScroll(); });
+  if ("ResizeObserver" in window) new ResizeObserver(() => { measure(); onScroll(); }).observe(line);
+  measure();
+  onScroll();
+
+  // ---- Lightbox (fades + scales in, tap anywhere or Esc to close) ----
   const lb = document.getElementById("lightbox");
   const lbImg = document.getElementById("lightbox-img");
+  const close = () => {
+    lb.classList.remove("open");
+    lb.setAttribute("aria-hidden", "true");
+  };
   list.addEventListener("click", (e) => {
     if (e.target.tagName === "IMG") {
       lbImg.src = e.target.src;
-      lb.hidden = false;
+      lbImg.alt = e.target.alt;
+      lb.classList.add("open");
+      lb.setAttribute("aria-hidden", "false");
     }
   });
-  lb.addEventListener("click", () => (lb.hidden = true));
-  document.addEventListener("keydown", (e) => e.key === "Escape" && (lb.hidden = true));
+  lb.addEventListener("click", close);
+  document.addEventListener("keydown", (e) => e.key === "Escape" && close());
 })();
