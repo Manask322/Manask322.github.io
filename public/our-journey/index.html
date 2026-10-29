@@ -47,6 +47,34 @@
     <ol class="stops" id="stops"></ol>
   </main>
 
+  <section class="finale" id="finale" hidden>
+    <p class="fn-hint" id="fn-hint"></p>
+    <button class="gift" id="gift" type="button">
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <g class="gift-box">
+          <rect x="18" y="52" width="84" height="58" rx="6" fill="#c8566b"/>
+          <rect x="18" y="52" width="84" height="10" fill="#b0445a"/>
+          <rect x="53" y="52" width="14" height="58" fill="#f2d27a"/>
+        </g>
+        <g class="gift-lid">
+          <rect x="12" y="38" width="96" height="18" rx="5" fill="#d9677c"/>
+          <rect x="53" y="38" width="14" height="18" fill="#f2d27a"/>
+          <path d="M60 38c-6-14-26-18-26-6 0 7 14 7 26 6zM60 38c6-14 26-18 26-6 0 7-14 7-26 6z" fill="#e0a100"/>
+          <circle cx="60" cy="37" r="5" fill="#f2d27a"/>
+        </g>
+      </svg>
+      <span class="gift-cta" id="gift-cta"></span>
+    </button>
+  </section>
+
+  <div class="poem" id="poem" aria-hidden="true">
+    <div class="poem-card" role="dialog" aria-modal="true" aria-label="Surprise">
+      <button class="poem-close" type="button" aria-label="Close">✕</button>
+      <div class="poem-lines" id="poem-lines"></div>
+      <p class="poem-sign">Yours, always, Manas</p>
+    </div>
+  </div>
+
   <footer class="end">
     <p id="footer"></p>
   </footer>

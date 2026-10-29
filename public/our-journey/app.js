@@ -232,7 +232,10 @@
             if (autoOpened.has(li)) return;
             autoOpened.add(li);
             letterIO.unobserve(li);
-            if (!lm.classList.contains("open") && !document.getElementById("lightbox").classList.contains("open")) {
+            const busy = lm.classList.contains("open") ||
+              document.getElementById("lightbox").classList.contains("open") ||
+              document.getElementById("celebrate").classList.contains("open");
+            if (!busy) {
               openLetter(li._letter);
             }
           }
@@ -457,6 +460,53 @@
       { rootMargin: "-40% 0px -40% 0px" }
     );
     document.querySelectorAll(".stop.milestone .station").forEach((el) => cbObserver.observe(el));
+  }
+
+  // ---- The surprise at the end: tap the gift, the poem appears line by line ----
+  if (J.finale && J.finale.poem) {
+    const finale = document.getElementById("finale");
+    const gift = document.getElementById("gift");
+    const poem = document.getElementById("poem");
+    const lines = document.getElementById("poem-lines");
+    finale.hidden = false;
+    document.getElementById("fn-hint").textContent = J.finale.hint || "";
+    document.getElementById("gift-cta").textContent = J.finale.button || "Tap to open your surprise 🎁";
+
+    const all = J.finale.poem.split("\n");
+    const lastText = all.filter((l) => l.trim()).pop();
+    all.forEach((t, i) => {
+      const el = document.createElement("p");
+      el.className = "poem-line" + (t.trim() ? "" : " gap") + (t === lastText && i === all.lastIndexOf(lastText) ? " last" : "");
+      el.textContent = t;
+      el.style.transitionDelay = (reduceMotion ? 0 : 0.5 + i * 0.55) + "s";
+      lines.appendChild(el);
+    });
+
+    let opening = false;
+    gift.addEventListener("click", () => {
+      if (opening) return;
+      opening = true;
+      gift.classList.add("shake");                            // 1. the box wiggles
+      setTimeout(() => gift.classList.add("open"), reduceMotion ? 0 : 900);   // 2. lid pops off
+      setTimeout(() => {                                       // 3. poem over the whole screen
+        poem.setAttribute("aria-hidden", "false");
+        poem.classList.add("open");
+        document.body.classList.add("no-scroll");
+        if (!reduceMotion) {
+          fireworks();
+          setTimeout(fireworks, 500 + all.length * 550);       // again for "I LOVE YOU"
+        }
+      }, reduceMotion ? 0 : 1500);
+    });
+    function closePoem() {
+      poem.classList.remove("open");
+      poem.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("no-scroll");
+      setTimeout(() => { gift.classList.remove("shake", "open"); opening = false; }, 700);
+    }
+    poem.querySelector(".poem-close").addEventListener("click", closePoem);
+    poem.addEventListener("click", (e) => { if (e.target === poem) closePoem(); });
+    document.addEventListener("keydown", (e) => e.key === "Escape" && poem.classList.contains("open") && closePoem());
   }
 
   // ---- Train glides along the track (rAF + lerp, transform only) ----
