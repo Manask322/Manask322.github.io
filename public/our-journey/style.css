@@ -135,8 +135,8 @@ body {
   will-change: transform;
   filter: drop-shadow(0 3px 5px rgba(0,0,0,.2));
 }
-.train span { display: block; transform: rotate(-90deg); animation: chug .6s ease-in-out infinite; }
-@keyframes chug { 50% { transform: rotate(-90deg) translateX(-1.5px); } }
+.train span { display: block; animation: chug .6s ease-in-out infinite; }
+@keyframes chug { 50% { transform: translateY(-1.5px); } }
 
 .stops { list-style: none; margin: 0; padding: 0; }
 

@@ -52,7 +52,7 @@ window.JOURNEY = {
       icon: "✨"
     },
     {
-      date: "2027-07-01",       // update with the exact wedding date
+      date: "2027-07-09",
       title: "Our Wedding",
       text: "The last station of this line, and the start of a new one.",
       photos: [],
