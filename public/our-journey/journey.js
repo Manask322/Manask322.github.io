@@ -24,8 +24,9 @@ window.JOURNEY = {
   //   letter: "..."    → an envelope on the track after this stop; it opens
   //                      by itself once she scrolls past, or when tapped
   //   { misc: [...] }  → little polaroids tucked between stations
+  //   dateLabel: "..." → show this instead of the date (e.g. a date range)
   stops: [
-    { date: "", icon: "💬", title: "Our 1st meet",
+    { date: "2026-06-25", icon: "💬", title: "Our 1st meet",
       text: "Where it all began.", photos: [] },
 
     { date: "2026-06-28", icon: "☕", title: "Our 2nd meet",
@@ -93,15 +94,15 @@ window.JOURNEY = {
     { date: "2026-10-02", icon: "✈️", title: "Our first flight",
       text: "", photos: ["first_flight", "first_flight_1"] },
 
-    { date: "2026-10-16", icon: "🛍️", title: "Pune meetup for shopping",
+    { date: "2026-10-17", icon: "🛍️", title: "Pune meetup for shopping",
       text: "", photos: ["pune_shopping"] },
 
-    { date: "2026-10-18", icon: "🍦", title: "Pune hangout at FC Road",
+    { date: "2026-10-18", dateLabel: "18 – 19 October 2026", icon: "🍦", title: "Pune hangout at FC Road",
       text: "", photos: ["pune_date", "pune_date_1", "pune_date_2"],
       letter: "Write your letter here." },
 
-    { date: "", icon: "🚉", title: "Solapur meetup",
-      text: "", photos: [] },
+    { date: "2026-10-31", icon: "🚉", title: "Solapur meetup",
+      text: "Keep the 31st free... someone might be catching a train 😉", photos: [] },
 
     { date: "2026-11-15", icon: "💍", title: "Our Engagement",
       text: "The day we make it official.", photos: [], milestone: true },

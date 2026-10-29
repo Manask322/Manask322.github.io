@@ -107,7 +107,7 @@
     const photos = (s.photos || []).map((p) => `<div class="photo">${imgTag(p)}</div>`).join("");
     const count = (s.photos || []).length;
     const placeholder = s.blank ? "A photo we haven't taken yet" : upcoming ? "Memories coming soon" : "Add photos in journey.js";
-    const dateText = d ? fmt(d) : s.blank ? "Date: yet to be written" : "Date to add";
+    const dateText = s.dateLabel ? s.dateLabel : d ? fmt(d) : s.blank ? "Date: yet to be written" : "Date to add";
 
     li.innerHTML = `
       <div class="station">${s.icon || "❤"}</div>
