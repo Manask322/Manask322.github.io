@@ -5,11 +5,11 @@
 // ============================================================
 
 window.JOURNEY = {
-  her: "Her Name",          // shown in the title
+  her: "Pranali",
   me: "Manas",
-  title: "Our Journey",
+  title: "Manas & Pranali",
   subtitle: "Every station on the way to forever",
-  birthdayNote: "Happy Birthday, my love ❤️",   // set to "" to hide
+  birthdayNote: "Happy Birthday, Pranali ❤️",   // set to "" to hide
 
   // Date format: "YYYY-MM-DD". Stations are shown in the order listed.
   // Stations with a future date automatically show as "upcoming"
