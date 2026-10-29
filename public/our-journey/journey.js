@@ -14,7 +14,7 @@ window.JOURNEY = {
 
   // Background music: put an mp3 in the music/ folder and write its path,
   // e.g. "music/our-song.mp3". Leave "" for the built-in music-box tune.
-  music: "",
+  music: "music/song.mp3",
 
   // The surprise at the very end of the track: a gift box she taps to open.
   // Each line of the poem appears one after another; the last line glows.
@@ -42,7 +42,7 @@ window.JOURNEY = {
 
     { date: "2026-07-05", icon: "🌿", title: "Our 3rd meet",
       text: "Third time's the charm.", photos: ["3_meet", "3_meet_2"],
-      letter: "I was sure the the day I met you but it felt like a dream ! how can I get someone so compatible and caring <3. I saw my a friend in you with whom I can spend my complete day out. You felt like someone I have known from ages already. Thank you for coming into my life." },
+      letter: "I was sure the day I met you but it felt like a dream ! how can I get someone so compatible and caring <3. I saw a friend in you with whom I can spend my complete day out. You felt like someone I have known from ages already. Thank you for coming into my life." },
 
     { date: "2026-07-19", icon: "👨‍👩‍👧", title: "First family meet",
       text: "Our families, together for the first time.", photos: ["first_family_meet"],
@@ -83,7 +83,7 @@ window.JOURNEY = {
 
     { date: "2026-08-26", icon: "👨‍👩‍👧‍👦", title: "First complete family meet",
       text: "Everyone, together.", photos: ["final_complete_family_meet"],
-      letter: "It was hard when families meet and friction between them but we fought all of it and this is when I reliased that in any ups and downs in life you are the sukoon of my life and my destiny. \"Jeena Yaha Marna Yaha Tera Bina Ab Jana Kaha\"" },
+      letter: "It was hard when families meet and friction between them but we fought all of it and this is when I realised that in any ups and downs in life you are the sukoon of my life and my destiny. \"Jeena Yaha Marna Yaha Tera Bina Ab Jana Kaha\"" },
 
     { misc: ["misc_2"] },
 
@@ -107,7 +107,7 @@ window.JOURNEY = {
 
     { date: "2026-10-18", dateLabel: "18 – 19 October 2026", icon: "🍦", title: "Pune hangout at FC Road",
       text: "", photos: ["pune_date", "pune_date_1", "pune_date_2"],
-      letter: "In Pune, I saw a different version of you, someone who is ready to spend her complete life with me, someone who cares a lot about me, is responsible and ready to create a new family of her own. I saw a girl tranform into a woman. The woman of my dreams. \"Meri Pasandita Aurat :p\"" },
+      letter: "In Pune, I saw a different version of you, someone who is ready to spend her complete life with me, someone who cares a lot about me, is responsible and ready to create a new family of her own. I saw a girl transform into a woman. The woman of my dreams. \"Meri Pasandita Aurat :p\"" },
 
     { date: "2026-10-31", icon: "🚉", title: "Solapur meetup",
       text: "Keep the 31st free... someone might be catching a train 😉", photos: [] },
