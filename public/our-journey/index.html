@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Our Journey</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💞</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <p class="birthday" id="birthday"></p>
+    <h1 id="title">Our Journey</h1>
+    <p class="subtitle" id="subtitle"></p>
+    <div class="countdown" id="countdown" hidden></div>
+    <a class="start" href="#line">All aboard ↓</a>
+  </header>
+
+  <main class="line" id="line">
+    <div class="track" aria-hidden="true"></div>
+    <div class="train" id="train" aria-hidden="true">🚂</div>
+    <ol class="stops" id="stops"></ol>
+  </main>
+
+  <footer class="end">
+    <p id="footer"></p>
+  </footer>
+
+  <div class="lightbox" id="lightbox" hidden>
+    <img id="lightbox-img" alt="">
+  </div>
+
+  <script src="journey.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
