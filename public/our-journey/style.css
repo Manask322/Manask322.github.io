@@ -26,6 +26,62 @@ body {
   overflow-x: hidden;
 }
 
+
+/* ---------- Background: drifting colour washes, paper grain, falling petals ---------- */
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, #fdeef0 0%, var(--bg) 35%, #fdf3ea 70%, #f9e9ee 100%);
+}
+.sky i {
+  position: absolute;
+  width: 70vmax;
+  height: 70vmax;
+  border-radius: 50%;
+  opacity: .55;
+  will-change: transform;
+  animation: drift 28s ease-in-out infinite alternate;
+}
+.sky i:nth-child(1) { top: -25vmax; left: -20vmax; background: radial-gradient(circle, #f7c6cf 0%, transparent 62%); }
+.sky i:nth-child(2) { top: 10vh; right: -30vmax; background: radial-gradient(circle, #ffdcc0 0%, transparent 62%); animation-duration: 34s; animation-delay: -8s; }
+.sky i:nth-child(3) { bottom: -30vmax; left: -10vmax; background: radial-gradient(circle, #e6d6f3 0%, transparent 62%); animation-duration: 40s; animation-delay: -16s; }
+.sky i:nth-child(4) { top: 40vh; left: 30vw; width: 45vmax; height: 45vmax; background: radial-gradient(circle, #f9d7a8 0%, transparent 62%); opacity: .35; animation-duration: 46s; animation-delay: -4s; }
+@keyframes drift {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(6vw, 4vh, 0) scale(1.08); }
+  100% { transform: translate3d(-4vw, 8vh, 0) scale(.95); }
+}
+/* soft paper grain so it never looks flat */
+.sky::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .18;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .55 0 0 0 0 .4 0 0 0 0 .4 0 0 0 .5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.petals { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.petal {
+  position: absolute;
+  top: -8vh;
+  will-change: transform;
+  animation: fall linear infinite;
+}
+.petal span {
+  display: block;
+  color: var(--rose);
+  animation: sway ease-in-out infinite alternate;
+}
+@keyframes fall { to { transform: translate3d(0, 118vh, 0); } }
+@keyframes sway {
+  from { transform: translateX(-18px) rotate(-20deg); }
+  to   { transform: translateX(18px) rotate(25deg); }
+}
+
 /* ---------- Hero ---------- */
 .hero {
   min-height: 100vh;
@@ -36,7 +92,6 @@ body {
   justify-content: center;
   text-align: center;
   padding: 2rem 1.25rem;
-  background: radial-gradient(ellipse at top, var(--rose-soft), var(--bg) 70%);
 }
 .hero > * {
   opacity: 0;
@@ -128,15 +183,14 @@ body {
   position: absolute;
   left: var(--rail-x);
   top: 0;
-  font-size: 2rem;
-  line-height: 1;
-  margin-left: -1rem;
+  width: 32px;
+  margin-left: -16px;
   z-index: 2;
   will-change: transform;
-  filter: drop-shadow(0 3px 5px rgba(0,0,0,.2));
+  filter: drop-shadow(0 4px 6px rgba(59, 42, 42, .25));
 }
-.train span { display: block; animation: chug .6s ease-in-out infinite; }
-@keyframes chug { 50% { transform: translateY(-1.5px); } }
+.train svg { display: block; width: 100%; height: auto; animation: chug .5s ease-in-out infinite; }
+@keyframes chug { 50% { transform: translateY(1.2px); } }
 
 .stops { list-style: none; margin: 0; padding: 0; }
 
@@ -274,7 +328,7 @@ body {
   :root { --rail-x: 1.5rem; }
   .line { padding: 3rem .9rem 4rem 0; }
   .track { width: 14px; }
-  .train { font-size: 1.6rem; margin-left: -.8rem; }
+  .train { width: 26px; margin-left: -13px; }
   .stop { padding-left: 3.25rem; margin-bottom: 2.5rem; }
   .station { width: 2.3rem; height: 2.3rem; margin-left: -1.15rem; font-size: 1rem; }
   .stop.milestone .station { width: 2.8rem; height: 2.8rem; margin-left: -1.4rem; font-size: 1.3rem; }
@@ -338,4 +392,5 @@ body {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition-duration: .01ms !important; transition-delay: 0s !important; }
   .hero > *, .js .stop .card, .js .stop .card > *, .js .stop .station { opacity: 1; transform: none; }
+  .petals { display: none; }
 }

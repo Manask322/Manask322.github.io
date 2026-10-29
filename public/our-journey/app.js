@@ -52,6 +52,30 @@
     }
   }
 
+  // ---- Falling petals & hearts in the background ----
+  if (!reduceMotion) {
+    const petals = document.getElementById("petals");
+    const shapes = ["❤", "✿", "❀", "❤", "✦"];
+    const count = window.innerWidth < 600 ? 9 : 16;
+    for (let i = 0; i < count; i++) {
+      const el = document.createElement("div");
+      el.className = "petal";
+      const inner = document.createElement("span");
+      inner.textContent = shapes[i % shapes.length];
+      const size = 10 + Math.random() * 12;
+      const fall = 16 + Math.random() * 18;
+      el.style.left = Math.random() * 100 + "vw";
+      el.style.animationDuration = fall + "s";
+      el.style.animationDelay = -Math.random() * fall + "s";
+      inner.style.fontSize = size + "px";
+      inner.style.opacity = (0.18 + Math.random() * 0.3).toFixed(2);
+      inner.style.animationDuration = 2.5 + Math.random() * 3 + "s";
+      if (i % 3 === 1) inner.style.color = "#c9a24a";
+      el.appendChild(inner);
+      petals.appendChild(el);
+    }
+  }
+
   // ---- Stations ----
   const list = document.getElementById("stops");
   J.stops.forEach((s) => {
@@ -120,9 +144,10 @@
   function render() {
     current += (target - current) * (reduceMotion ? 1 : 0.12);
     if (Math.abs(target - current) < 0.0005) current = target;
-    const y = current * (lineHeight - 40);
+    const th = train.offsetHeight;
+    const y = current * (lineHeight - th);
     train.style.transform = `translate3d(0, ${y}px, 0)`;
-    trail.style.transform = `scaleY(${(y + 20) / lineHeight})`;
+    trail.style.transform = `scaleY(${(y + th / 2) / lineHeight})`;
     if (current !== target) requestAnimationFrame(render);
     else running = false;
   }

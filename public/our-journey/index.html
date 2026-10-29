@@ -13,6 +13,9 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="sky" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <div class="petals" id="petals" aria-hidden="true"></div>
+
   <header class="hero">
     <p class="birthday" id="birthday"></p>
     <h1 id="title">Our Journey</h1>
@@ -24,7 +27,23 @@
   <main class="line" id="line">
     <div class="track" aria-hidden="true"></div>
     <div class="trail" id="trail" aria-hidden="true"></div>
-    <div class="train" id="train" aria-hidden="true"><span>🚂</span></div>
+    <div class="train" id="train" aria-hidden="true">
+      <svg viewBox="0 0 32 92" xmlns="http://www.w3.org/2000/svg">
+        <!-- rear carriage -->
+        <rect x="5" y="2" width="22" height="24" rx="6" fill="#fffaf5" stroke="#c9a24a" stroke-width="2"/>
+        <path d="M16 18c-4-3-6-5-6-7.2a3 3 0 0 1 6-.8 3 3 0 0 1 6 .8c0 2.2-2 4.2-6 7.2z" fill="#c8566b"/>
+        <rect x="14" y="26" width="4" height="5" fill="#6b4f4a"/>
+        <!-- front carriage -->
+        <rect x="5" y="31" width="22" height="24" rx="6" fill="#fffaf5" stroke="#c9a24a" stroke-width="2"/>
+        <path d="M16 47c-4-3-6-5-6-7.2a3 3 0 0 1 6-.8 3 3 0 0 1 6 .8c0 2.2-2 4.2-6 7.2z" fill="#c8566b"/>
+        <rect x="14" y="55" width="4" height="5" fill="#6b4f4a"/>
+        <!-- engine, nose pointing down the line -->
+        <path d="M4 66a6 6 0 0 1 6-6h12a6 6 0 0 1 6 6v12c0 6-5.5 12-12 12S4 84 4 78z" fill="#c8566b"/>
+        <rect x="8" y="63" width="16" height="7" rx="2" fill="#f6d9de"/>
+        <circle cx="16" cy="79" r="4" fill="#3b2a2a"/>
+        <circle cx="16" cy="79" r="1.6" fill="#c9a24a"/>
+      </svg>
+    </div>
     <ol class="stops" id="stops"></ol>
   </main>
 
